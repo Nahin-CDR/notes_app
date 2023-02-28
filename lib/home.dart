@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:todo_app/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _deleteItem({required int itemKey})async{
     await _shoppingBox.delete(itemKey);
     _refreshItems();
+    _nameController.text = '';
+    _quantityController.text = '';
   }
 
 
@@ -62,9 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 5,
         builder: (_){
           return Container(
-
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: themeProviderView.currentTheme == 'dark' ? Colors.grey : Colors.black,
               boxShadow: [
                   BoxShadow(
                     color: Colors.blueAccent.withOpacity(0.5),
@@ -90,14 +92,22 @@ class _HomeScreenState extends State<HomeScreen> {
               //mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
+                  style: TextStyle(
+                    color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
+                  ),
                   keyboardType: TextInputType.text,
                   controller: _nameController,
-                  decoration: const InputDecoration(hintText: 'Name'),
+                  decoration: InputDecoration(hintText: 'Name',hintStyle:  TextStyle(
+                  color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
+                  ),),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextField(
+                  style: TextStyle(
+                    color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
+                  ),
                   controller: _quantityController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(hintText: 'Quantity'),
@@ -111,6 +121,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: themeProviderView.currentTheme=='dark'?Colors.white:Colors.grey,
+                            backgroundColor: themeProviderView.currentTheme=='dark'?Colors.black26:Colors.black,
+                          ),
                           onPressed: ()async{
                             if(_nameController.text.isNotEmpty && _quantityController.text.isNotEmpty){
                               if(itemKey == null){
@@ -135,6 +149,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(itemKey == null ? "create new" : "update")
                       ),
                       ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: themeProviderView.currentTheme=='dark'?Colors.white:Colors.grey,
+                            backgroundColor: themeProviderView.currentTheme=='dark'?Colors.black26:Colors.black,
+                          ),
                           onPressed: (){
                             Navigator.of(context).pop();
                           },
@@ -152,33 +170,50 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  ThemeProviderView themeProviderView = ThemeProviderView();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    themeProviderView.initialize();
     _refreshItems();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false, // set it to false,
-        body: _items.isEmpty? const Center(
-          child: Text("No data to show !",style: TextStyle(color: Colors.brown)),
-        ): 
-        ListView.builder(
+      body: _items.isEmpty?Center(
+          child: Text("No data to show !",
+              style: TextStyle(
+                  color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.brown
+              )
+          )
+      ):
+      ListView.builder(
             itemCount: _items.length,
             itemBuilder: (context,index){
               final currentItem = _items[index];
               return Card(
                 margin: const EdgeInsets.only(left: 10,right: 10,top: 15),
-                color: Colors.white,
+                color: themeProviderView.currentTheme=='dark'?Colors.grey:Colors.white,
                 shadowColor: Colors.blueAccent.withOpacity(.5),
                 elevation: 3,
                 child: ListTile(
-                  title: Text(currentItem['name']),
-                  subtitle: Text(currentItem['quantity'].toString()),
+                  title: Text(currentItem['name'],
+                    style: TextStyle(
+                      color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
+                    ),
+                  ),
+                  subtitle: Text(currentItem['quantity'].toString(),
+                    style: TextStyle(
+                      color: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
+                    ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -200,9 +235,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }),
+
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> _showForm(context, null),
-        backgroundColor: Colors.brown,
+        backgroundColor: themeProviderView.currentTheme=='dark'?Colors.white:Colors.black,
         child: const Icon(Icons.add),
       ),
     );
