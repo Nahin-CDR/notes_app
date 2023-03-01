@@ -1,4 +1,4 @@
-package com.example.todo_app;
+package com.nahindcoder_notes.app;
 
 import io.flutter.embedding.android.FlutterActivity;
 

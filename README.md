@@ -1,4 +1,4 @@
-# todo_app
+# notes
 
 
 ## Learn and Implement Hive DataBase
