@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'package:notes/home.dart';
 import 'package:notes/theme_provider.dart';
 
@@ -34,8 +33,10 @@ class _MyAppState extends State<MyApp> {
                 theme: ThemeData.light(),
                 darkTheme: ThemeData.dark(),
                 themeMode: value.themeMode,
-                home: const HomeScreen());
+                home: const HomeScreen()
+            );
           },
-        ));
+        )
+    );
   }
 }
