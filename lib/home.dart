@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: themeProviderView.currentTheme == 'dark'
             ? Colors.white
             : Colors.black,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add)
       ),
     );
   }
